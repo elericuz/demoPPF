@@ -1,10 +1,13 @@
 package com.pragmum.demo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -43,7 +46,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         recycler.layoutManager = layoutManager
-        adapter = DemoAdapter(coworkers)
+        adapter = DemoAdapter(
+            coworkers,
+            object : DemoAdapter.ItemInterface {
+                override fun onClick(position: Int) {
+                    Person.coworker = coworkers[position]
+
+                    val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+        )
         recycler.adapter = adapter
     }
 }
