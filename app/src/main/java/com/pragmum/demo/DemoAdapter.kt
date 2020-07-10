@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.items_layout.view.*
 
-class DemoAdapter(val coworkers: ArrayList<PersonModel>): RecyclerView.Adapter<DemoAdapter.ViewHolder> () {
+class DemoAdapter(
+    val coworkers: ArrayList<PersonModel>,
+    val itemListerner: ItemInterface): RecyclerView.Adapter<DemoAdapter.ViewHolder> () {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DemoAdapter.ViewHolder {
         val layout = R.layout.items_layout
         val v: View = LayoutInflater.from(parent.context).inflate(layout, parent, false)
@@ -23,11 +25,18 @@ class DemoAdapter(val coworkers: ArrayList<PersonModel>): RecyclerView.Adapter<D
         fun bind(position: Int) {
             val name = itemView.nameText
             val title = itemView.titleText
+            val personContainer = itemView.personContainer
 
             name.text = coworkers[position].name
             title.text = coworkers[position].position
+
+            personContainer.setOnClickListener {
+                itemListerner.onClick(position)
+            }
         }
     }
 
-
+    interface ItemInterface {
+        fun onClick(position: Int)
+    }
 }
